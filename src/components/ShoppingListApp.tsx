@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Plus, Store, ShoppingCart, Calendar, Edit2, Trash2, Check, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
+import Footer from './Footer';
 
 interface ShoppingItem {
   id: string;
@@ -138,102 +138,105 @@ const ShoppingListApp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 p-4">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-primary mb-2 flex items-center justify-center gap-3">
-            <ShoppingCart className="h-10 w-10 text-blue-600" />
-            Smart Shopping Lists
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Organize your shopping by store and never forget an item again
-          </p>
-        </div>
-
-        {/* Create New List Button */}
-        <div className="flex justify-center mb-8">
-          <Button
-            onClick={() => setShowNewListForm(true)}
-            className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-3 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-          >
-            <Plus className="h-5 w-5 mr-2" />
-            Create New Shopping List
-          </Button>
-        </div>
-
-        {/* New List Form */}
-        {showNewListForm && (
-          <Card className="mb-8 mx-auto max-w-md shadow-xl border-0 bg-white/80 backdrop-blur-sm">
-            <CardHeader className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-t-lg">
-              <CardTitle className="flex items-center gap-2">
-                <Store className="h-5 w-5" />
-                New Shopping List
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="storeName" className="text-sm font-medium">
-                    Store Name
-                  </Label>
-                  <Input
-                    id="storeName"
-                    placeholder="e.g., Walmart, Target, Costco..."
-                    value={newStoreName}
-                    onChange={(e) => setNewStoreName(e.target.value)}
-                    className="mt-1"
-                    onKeyPress={(e) => e.key === 'Enter' && createNewList()}
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <Button onClick={createNewList} className="flex-1">
-                    Create List
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => {
-                      setShowNewListForm(false);
-                      setNewStoreName('');
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Shopping Lists */}
-        {lists.length === 0 ? (
-          <div className="text-center py-16">
-            <ShoppingCart className="h-24 w-24 text-muted-foreground mx-auto mb-4 opacity-50" />
-            <h3 className="text-2xl font-semibold text-muted-foreground mb-2">
-              No shopping lists yet
-            </h3>
-            <p className="text-muted-foreground">
-              Create your first shopping list to get started!
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+      <div className="p-4">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-primary mb-2 flex items-center justify-center gap-3">
+              <ShoppingCart className="h-10 w-10 text-blue-600" />
+              Smart Shopping Lists
+            </h1>
+            <p className="text-muted-foreground text-lg">
+              Organize your shopping by store and never forget an item again
             </p>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {lists.map((list) => (
-              <ShoppingListCard
-                key={list.id}
-                list={list}
-                onAddItem={addItemToList}
-                onTogglePurchased={toggleItemPurchased}
-                onMoveToNext={moveItemToNext}
-                onRemoveItem={removeItem}
-                onDeleteList={deleteList}
-                editingItem={editingItem}
-                setEditingItem={setEditingItem}
-              />
-            ))}
+
+          {/* Create New List Button */}
+          <div className="flex justify-center mb-8">
+            <Button
+              onClick={() => setShowNewListForm(true)}
+              className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-3 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              Create New Shopping List
+            </Button>
           </div>
-        )}
+
+          {/* New List Form */}
+          {showNewListForm && (
+            <Card className="mb-8 mx-auto max-w-md shadow-xl border-0 bg-white/80 backdrop-blur-sm">
+              <CardHeader className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-t-lg">
+                <CardTitle className="flex items-center gap-2">
+                  <Store className="h-5 w-5" />
+                  New Shopping List
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="storeName" className="text-sm font-medium">
+                      Store Name
+                    </Label>
+                    <Input
+                      id="storeName"
+                      placeholder="e.g., Walmart, Target, Costco..."
+                      value={newStoreName}
+                      onChange={(e) => setNewStoreName(e.target.value)}
+                      className="mt-1"
+                      onKeyPress={(e) => e.key === 'Enter' && createNewList()}
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <Button onClick={createNewList} className="flex-1">
+                      Create List
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        setShowNewListForm(false);
+                        setNewStoreName('');
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Shopping Lists */}
+          {lists.length === 0 ? (
+            <div className="text-center py-16">
+              <ShoppingCart className="h-24 w-24 text-muted-foreground mx-auto mb-4 opacity-50" />
+              <h3 className="text-2xl font-semibold text-muted-foreground mb-2">
+                No shopping lists yet
+              </h3>
+              <p className="text-muted-foreground">
+                Create your first shopping list to get started!
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {lists.map((list) => (
+                <ShoppingListCard
+                  key={list.id}
+                  list={list}
+                  onAddItem={addItemToList}
+                  onTogglePurchased={toggleItemPurchased}
+                  onMoveToNext={moveItemToNext}
+                  onRemoveItem={removeItem}
+                  onDeleteList={deleteList}
+                  editingItem={editingItem}
+                  setEditingItem={setEditingItem}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };
